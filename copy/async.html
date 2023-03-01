@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>cliboardJS 异步复制</title>
+  <script src="https://cdn.jsdelivr.net/npm/clipboard@2.0.6/dist/clipboard.min.js"></script>
+  <script src="https://cdn.bootcdn.net/ajax/libs/vConsole/3.15.0/vconsole.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/jquery@3.6.3/dist/jquery.min.js"></script>
+</head>
+
+
+<body>
+
+  <!-- 用户点击的元素 -->
+  <div id="button">异步点击复制</div>
+
+  <!-- 模拟点击元素 -->
+  <div class="copy" id="moni-click" data-clipboard-target="#result-copy"></div>
+  
+  <!-- 复制内容目标元素 -->
+  <div id="result-box"></div>
+</body>
+
+<script>
+  new VConsole()
+  window.onload = function () {
+    // 初始化clipboard
+    var clipboard = new ClipboardJS('.copy');
+
+
+    $("#button").click(function () {
+      $.ajax({
+        url: 'http://juejin.cn',
+        error: function (xhr, status, error) {
+          const ele = document.createElement('div')
+          ele.setAttribute('class', 'btn')
+          ele.setAttribute('id', 'result-copy')
+          ele.innerText = 'clipboard要复制的内容'
+          $("#result-box").append(ele)
+
+          // 关键点,必须写settimeout否则safari浏览器不生效
+          setTimeout(() => {
+            $('#moni-click').trigger('click')
+          }, 0);
+        }
+      })
+    })
+
+
+
+
+    clipboard.on('success', function (e) {
+      alert('复制成功')
+      // 复制成功，删除克隆块
+      $("#result-box").html('')
+      e.clearSelection();
+    });
+    clipboard.on('error', function (e) {
+      alert("复制失败!本产品只兼容到Chrome 42+、Firefox 41+、IE 9+、Opera 29+，请您换一个最新浏览器。")
+    });
+  }
+</script>
+
+</html>

@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>cliboardJS 同步复制</title>
+  <script src="https://cdn.jsdelivr.net/npm/clipboard@2.0.6/dist/clipboard.min.js"></script>
+  <script src="https://cdn.bootcdn.net/ajax/libs/vConsole/3.15.0/vconsole.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/jquery@3.6.3/dist/jquery.min.js"></script>
+</head>
+<style>
+  .copy, #foo{
+    cursor: pointer;
+    text-align: center;
+    margin: 0 auto;
+    margin-bottom: 50px;
+  }
+</style>
+
+<body>
+
+  <!-- 方式一  复制元素的data-clipboard-text属性 -->
+  <div class="copy" data-clipboard-text="我是元素的data-clipboard-text属性内容">方式一: 点击同步复制</div>
+  
+  <!-- 方式二  复制目标id元素foo的元素内容 -->
+  <div class="copy" data-clipboard-target="#foo">方式二: 点击同步复制目标元素</div>
+  <div id="foo">我是目标id元素内容</div>
+
+</body>
+
+<script>
+  new VConsole()
+  
+  window.onload = function () {
+    // 初始化clipboard
+    var clipboard = new ClipboardJS('.copy');
+
+    clipboard.on('success', function (e) {
+      alert('复制成功')
+      e.clearSelection();
+    });
+    clipboard.on('error', function (e) {
+      alert("复制失败!本产品只兼容到Chrome 42+、Firefox 41+、IE 9+、Opera 29+，请您换一个最新浏览器。")
+    });
+  }
+</script>
+
+</html>
