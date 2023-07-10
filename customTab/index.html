@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="https://cdn.jsdelivr.net/npm/vue@2"></script>
+    <style>
+        .container {
+            position: relative;
+            display: flex;
+            align-items: center;
+            width: 450px;
+            height: 50px;
+            background: #ccc;
+            border-radius: 16px;
+            overflow: hidden;
+        }
+
+        .container .item {
+            position: relative;
+            z-index: 9;
+            width: 150px;
+            height: 50px;
+            line-height: 50px;
+            text-align: center;
+            cursor: pointer;
+        }
+
+        .bg-box {
+            position: absolute;
+            width: 150px;
+            height: 50px;
+            background: #6ecb15;
+            bottom: 0;
+            left: 0;
+            border-radius: 0 20px 0 20px;
+            /* transform: perspective(40px) scaleX(1.4) scaleY(-1.5) rotateX(20deg) translate(14px, 0); */
+            /* transform: rotate(180deg); */
+            /* transform-origin: 53% 100%; */
+            animation: navAnimation 1s;
+        }
+
+        .bg-box::before {
+            content: "";
+            position: absolute;
+            left: -20px;
+            top: 0;
+            width: 20px;
+            height: 20px;
+            background: radial-gradient(circle at 0 100%, transparent, transparent 19px, #6ecb15 20px, #6ecb15);
+        }
+
+        .bg-box::after {
+            content: "";
+            position: absolute;
+            right: -20px;
+            width: 20px;
+            height: 20px;
+            top: 30px;
+            background: radial-gradient(circle at 100% 0, transparent, transparent 19px, #6ecb15 20px, #6ecb15);
+        }
+        @keyframes navAnimation{
+            0% {
+                left: 0;
+            }
+            100% {
+                left: inherit;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container" id="app">
+        <div class="item" @click="handleClick(0)">选项卡1</div>
+        <div class="item" @click="handleClick(1)">选项卡2</div>
+        <div class="item" @click="handleClick(2)">选项卡3</div>
+        <div class="bg-box" id="bg-box"></div>
+    </div>
+</body>
+
+<script>
+    new Vue({
+        el: '#app',
+        data: {
+            activeItem: 0
+        },
+        methods: {
+            handleClick(index) {
+                this.activeItem = index
+                const bgBox = document.getElementById('bg-box')
+                if(index === 0){
+                    bgBox.style.left = index * 150 - 20 + 'px'
+                }else{
+                    bgBox.style.left = index * 150  + 'px'
+                }
+            }
+        },
+    })
+</script>
+
+</html>
